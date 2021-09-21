@@ -22,7 +22,7 @@ client.on('messageCreate', message => {
   }
 
   // eslint-disable-next-line no-unused-expressions
-  if (listMethods[messageContent] && prefix === '-') {
+  if (listMethods[messageContent] && prefix === process.env.PREFIX) {
     params === ''
       ? listMethods[messageContent](message)
       : listMethods[messageContent](message, params);
