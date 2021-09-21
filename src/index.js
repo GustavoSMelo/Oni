@@ -14,11 +14,9 @@ client.on('messageCreate', message => {
   const prefix = message.content.slice(0, 1);
   let messageContent = message.content.split('-');
   messageContent = messageContent[1];
-  console.log(messageContent);
   let params = '';
   if (message && message.content && message?.content?.split(' ')) {
     params = message.content.split(' ')[1];
-    console.log(`params ${params}`);
   }
 
   // eslint-disable-next-line no-unused-expressions
