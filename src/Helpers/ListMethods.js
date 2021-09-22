@@ -7,4 +7,4 @@ function ListMethods () {
   };
 }
 
-module.exports = ListMethods();
+module.exports = ListMethods;
