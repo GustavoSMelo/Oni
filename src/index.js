@@ -10,10 +10,10 @@ client.on('ready', () => {
   console.log('oni is hunting another soul ');
 });
 
-client.on('messageCreate', async message => {
+client.on('messageCreate', message => {
   const prefix = message.content.slice(0, 1);
-  let messageContent = message.content.split('-');
-  messageContent = messageContent[1].toLowerCase();
+  let messageContent = message.content.split(process.env.PREFIX);
+  messageContent = messageContent[1];
   let params = '';
   if (message && message.content && message?.content?.split(' ')) {
     params = message.content.split(' ')[1];
