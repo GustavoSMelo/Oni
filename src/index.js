@@ -11,6 +11,7 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate', message => {
+  message.content = message.content.toLowerCase();
   const prefix = message.content.slice(0, 1);
   let messageContent = message.content.split(process.env.PREFIX);
   messageContent = messageContent[1];
@@ -25,6 +26,11 @@ client.on('messageCreate', message => {
       ? listMethods[messageContent](message)
       : listMethods[messageContent](message, params);
   }
+});
+
+client.on('disconnect', message => {
+  message.member.voice.channelId = null;
+  message.member = null;
 });
 
 client.login(process.env.BOT_KEY);
