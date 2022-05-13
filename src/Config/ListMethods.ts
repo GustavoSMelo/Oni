@@ -1,7 +1,7 @@
+import { Message } from 'discord.js';
 import Interactions from '../Services/Interactions';
 
 class ListMethods {
-
   public methods () {
     return [
         {
@@ -12,7 +12,7 @@ class ListMethods {
         {
             command: 'invoke',
             action: new Interactions().Invoke,
-            description: 'Call someone to hell to enter in voice channel ',
+            description: 'Call everyone to enter in voice channel ',
         }
     ];
   }
