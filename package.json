@@ -1,12 +1,12 @@
 {
-  "name": "Oni Discord Bot",
+  "name": "oni_discord_bot",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node ./src/index.ts",
-    "start:dev": "ts-node-dev ./src/index.ts"
+    "start:dev": "clear; ts-node-dev ./src/index.ts"
   },
   "author": "GustavoSMelo",
   "license": "ISC",
