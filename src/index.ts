@@ -1,43 +1,43 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 
+//imports
+
 import { Client } from 'discord.js';
 import myIntents from './Config/Intents';
 import ListMethods from './Config/ListMethods';
 
+// initiate constants
+
 const client = new Client({ intents: myIntents });
 const listMethods = new ListMethods().methods();
+const prefixEnv = process.env.PREFIX || '-';
 
 client.on('ready', () => {
-  console.log('oni is hunting another soul ');
+    console.log('oni is hunting another soul ');
 });
 
 client.on('messageCreate', message => {
-  message.content = message.content.toLowerCase();
+    if (message.content && message.content.length >= 2 && message.content.startsWith(prefixEnv)) {
+        message.content = message.content.toLowerCase().trim();
 
-  const prefix = message.content.slice(0, 1);
-  const prefixEnv = process.env.PREFIX || '-';
+        const prefix = message.content.slice(0, 1);
 
-  let messageContent = message.content.split(prefixEnv)[1];
+        const messageContent: string = message.content?.split(prefixEnv)[1];
 
-  let params = '';
-  if (message && message.content && message?.content?.split(' ')) {
-    params = message.content.split(' ')[1];
-  }
+        const [command, params] = messageContent?.includes(' ') ?
+            messageContent.split(' ') :
+            [messageContent, ' '] ;
 
-  listMethods.map(methods => {
-      if(methods.command === messageContent && prefix === prefixEnv) {
+        console.log(messageContent);
+        console.log(command);
 
-        params === ''
-        ? methods.action(message)
-        : methods.action(message, params); // methods.action(message, params);
-      }
-  });
-});
-
-client.on('disconnect', message => {
-  message.member.voice.channelId = null;
-  message.member = null;
+        listMethods.map(methods => {
+            if (methods.command === command && prefix === prefixEnv) {
+                methods.action(message);
+            }
+        });
+    }
 });
 
 client.login(process.env.BOT_KEY);
