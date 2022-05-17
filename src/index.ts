@@ -1,17 +1,16 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config();
-
-//imports
-
+import dotenv from 'dotenv';
 import { Client } from 'discord.js';
 import myIntents from './Config/Intents';
 import ListMethods from './Config/ListMethods';
+import Database from './Config/Database';
 
 // initiate constants
 
+dotenv.config();
 const client = new Client({ intents: myIntents });
 const listMethods = new ListMethods().methods();
 const prefixEnv = process.env.PREFIX || '-';
+new Database().config();
 
 client.on('ready', () => {
     console.log('oni is hunting another soul ');
