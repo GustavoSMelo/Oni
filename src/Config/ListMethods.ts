@@ -1,4 +1,3 @@
-import { Message } from 'discord.js';
 import Interactions from '../Services/Interactions';
 
 class ListMethods {
