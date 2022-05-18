@@ -1,8 +1,9 @@
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 import { Client } from 'discord.js';
 import myIntents from './Config/Intents';
 import ListMethods from './Config/ListMethods';
-import Database from './Config/Database';
+import Database from './Database/Database';
+import "reflect-metadata"
 
 // initiate constants
 

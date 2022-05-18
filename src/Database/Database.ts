@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
 class DatabaseConnection {
     public constructor () {
@@ -12,7 +13,10 @@ class DatabaseConnection {
             host: process.env.DATABASE_HOST,
             username: process.env.DATABASE_USER,
             password: process.env.DATABASE_PASSWORD,
-            port: Number(process.env.DATABASE_PORT)
+            port: Number(process.env.DATABASE_PORT),
+            migrations: [path.dirname + path.join('/Migrations/*.ts')],
+            entities: [path.dirname + path.join('/Entity/*.ts')],
+            synchronize: true
         });
 
         return dbConnection;
