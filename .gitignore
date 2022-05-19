@@ -5,3 +5,4 @@ build/
 tmp/
 temp/
 .env
+prisma/migrations/migration_lock.toml
