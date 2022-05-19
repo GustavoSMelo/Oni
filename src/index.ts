@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 import { Client } from 'discord.js';
 import myIntents from './Config/Intents';
 import ListMethods from './Config/ListMethods';
-import Database from './Database/Database';
 import "reflect-metadata"
 
 // initiate constants
@@ -11,7 +10,8 @@ dotenv.config();
 const client = new Client({ intents: myIntents });
 const listMethods = new ListMethods().methods();
 const prefixEnv = process.env.PREFIX || '-';
-new Database().config();
+
+//events
 
 client.on('ready', () => {
     console.log('oni is hunting another soul ');
@@ -39,5 +39,7 @@ client.on('messageCreate', message => {
         });
     }
 });
+
+// bot start
 
 client.login(process.env.BOT_KEY);
