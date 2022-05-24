@@ -1,4 +1,5 @@
 import Interactions from '../Services/Interactions';
+import StarWarsUser from '../Services/StarWarsUser';
 
 class ListMethods {
   public methods () {
@@ -12,6 +13,11 @@ class ListMethods {
             command: 'invoke',
             action: new Interactions().Invoke,
             description: 'Call everyone to enter in voice channel ',
+        },
+        {
+            command: 'swjoin',
+            action: new StarWarsUser().join,
+            description: 'Join on the Star Wars universe'
         }
     ];
   }
