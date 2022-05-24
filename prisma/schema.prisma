@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model StarWars {
+model StarWarsUser {
     id      Int     @id @default(autoincrement())
     faction String
     role    String
