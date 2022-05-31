@@ -29,9 +29,6 @@ client.on('messageCreate', message => {
             messageContent.split(' ') :
             [messageContent, ' '] ;
 
-        console.log(messageContent);
-        console.log(command);
-
         listMethods.map(methods => {
             if (methods.command === command && prefix === prefixEnv) {
                 methods.action(message);
