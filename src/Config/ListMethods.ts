@@ -5,6 +5,11 @@ class ListMethods {
   public methods () {
     return [
         {
+            command: 'help',
+            action: new Interactions().Help,
+            description: 'Show all commands'
+        },
+        {
             command: 'hello',
             action: new Interactions().Hello,
             description: 'Used to debug, but Oni will say hi to u'
@@ -18,10 +23,9 @@ class ListMethods {
             command: 'swjoin',
             action: new StarWarsUser().join,
             description: 'Join on the Star Wars universe'
-        }
+        },
     ];
   }
-
 }
 
 export default ListMethods;
