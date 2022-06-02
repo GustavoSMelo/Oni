@@ -25,14 +25,12 @@ client.on('messageCreate', message => {
 
         const messageContent: string = message.content?.split(prefixEnv)[1];
 
-        const [command, params] = messageContent?.includes(' ') ?
+        const [command, _] = messageContent?.includes(' ') ?
             messageContent.split(' ') :
-            [messageContent, ' '] ;
+            [messageContent, ''] ;
 
         listMethods.map(methods => {
-            if (methods.command === command && prefix === prefixEnv) {
-                methods.action(message);
-            }
+            if (methods.command === command && prefix === prefixEnv) methods.action(message);
         });
     }
 });
