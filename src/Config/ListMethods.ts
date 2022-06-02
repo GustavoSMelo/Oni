@@ -24,6 +24,11 @@ class ListMethods {
             action: new StarWarsUser().join,
             description: 'Join on the Star Wars universe'
         },
+        {
+            command: 'sortition',
+            action: new Interactions().Sortition,
+            description: 'Sortition a options that has passed'
+        }
     ];
   }
 }
