@@ -1,5 +1,7 @@
 import { Message } from "discord.js";
 import ListMethods from "../Config/ListMethods";
+import Extract from "../Utils/Extract";
+import Generate from "../Utils/Generate";
 
 class Interactions {
     public Hello(message: Message) {
@@ -21,6 +23,17 @@ class Interactions {
             });
 
         message.reply(helper);
+    }
+
+    public Sortition (message: Message) {
+        const content = Extract.contentToString(message.content);
+        const index = Generate.generateARandomNumberBasedOnLength(content.length);
+
+        message.reply(content[index]);
+    }
+
+    public Join (message: Message) {
+        const channel = message.member.voice.channel.joinable;
     }
 }
 
