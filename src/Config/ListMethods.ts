@@ -28,6 +28,16 @@ class ListMethods {
             command: 'sortition',
             action: new Interactions().Sortition,
             description: 'Sortition a options that has passed'
+        },
+        {
+            command: 'join',
+            action: new Interactions().Join,
+            description: 'Join a voice channel'
+        },
+        {
+            command: 'disconnect',
+            action: new Interactions().Disconnect,
+            description: 'Disconnect from voice channel'
         }
     ];
   }

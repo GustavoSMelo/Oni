@@ -2,6 +2,7 @@ import { Message } from "discord.js";
 import ListMethods from "../Config/ListMethods";
 import Extract from "../Utils/Extract";
 import Generate from "../Utils/Generate";
+import { joinVoiceChannel, getVoiceConnection } from '@discordjs/voice';
 
 class Interactions {
     public Hello(message: Message) {
@@ -33,7 +34,21 @@ class Interactions {
     }
 
     public Join (message: Message) {
-        const channel = message.member.voice.channel.joinable;
+        joinVoiceChannel({
+            channelId: message.member.voice.channel.id,
+            guildId: message.member.guild.id,
+            adapterCreator: message.guild.voiceAdapterCreator
+        })
+    }
+
+    public Disconnect (message: Message) {
+        const connection = getVoiceConnection(message.member.guild.id);
+
+        try {
+            connection.destroy();
+        } catch (err) {
+            message.reply('I am not in voice channel');
+        }
     }
 }
 
