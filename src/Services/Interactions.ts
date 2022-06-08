@@ -2,18 +2,18 @@ import { Message } from "discord.js";
 import ListMethods from "../Config/ListMethods";
 import Extract from "../Utils/Extract";
 import Generate from "../Utils/Generate";
-import { joinVoiceChannel, getVoiceConnection } from '@discordjs/voice';
+import { joinVoiceChannel, getVoiceConnection, VoiceConnection } from '@discordjs/voice';
 
 class Interactions {
-    public Hello(message: Message) {
+    public hello(message: Message): void {
         message.reply('hi');
     }
 
-    public Invoke(message: Message) {
+    public invoke(message: Message): void {
         message.reply(`@everyone <@${message.author.id}>`);
     }
 
-    public Help(message: Message) {
+    public help(message: Message): void {
         let helper = '';
 
         new ListMethods()
@@ -26,28 +26,30 @@ class Interactions {
         message.reply(helper);
     }
 
-    public Sortition (message: Message) {
+    public sortition (message: Message): void {
         const content = Extract.contentToString(message.content);
         const index = Generate.generateARandomNumberBasedOnLength(content.length);
 
         message.reply(content[index]);
     }
 
-    public Join (message: Message) {
-        joinVoiceChannel({
+    public join (message: Message): VoiceConnection {
+        const connection = joinVoiceChannel({
             channelId: message.member.voice.channel.id,
             guildId: message.member.guild.id,
             adapterCreator: message.guild.voiceAdapterCreator
-        })
+        });
+
+        return connection;
     }
 
-    public Disconnect (message: Message) {
+    public disconnect (message: Message): void {
         const connection = getVoiceConnection(message.member.guild.id);
 
-        try {
+        if (connection) {
             connection.destroy();
-        } catch (err) {
-            message.reply('I am not in voice channel');
+        } else {
+            message.reply('Any voice chat is not connected');
         }
     }
 }
