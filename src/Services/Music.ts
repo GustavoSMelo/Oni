@@ -1,13 +1,26 @@
 import { Message } from "discord.js";
 import Interactions from "./Interactions";
+import ytdl = require("ytdl-core");
+import { createAudioPlayer, createAudioResource } from "@discordjs/voice";
 
 class Music {
-    public constructor (
-        private readonly interactions: Interactions
-    ) {}
+    public async play (message: Message): Promise<void> {
+        try {
+            const connection = new Interactions().join(message);
+            const URL = message.embeds[0].url;
 
-    public play (message: Message) {
-        this.interactions.Join();
+            ytdl.validateURL(URL);
+            const ytbMusic = ytdl(URL, { filter: "audioonly" });
+
+            const audioPlayer = createAudioPlayer();
+            const resourcePlayer = createAudioResource(ytbMusic);
+
+            await audioPlayer.play(resourcePlayer);
+            connection.subscribe(audioPlayer);
+        } catch (err) {
+            message.reply('An error was founded while trying to play the music');
+            console.log(err);
+        }
     }
 }
 
