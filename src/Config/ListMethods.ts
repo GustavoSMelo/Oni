@@ -1,4 +1,5 @@
 import Interactions from '../Services/Interactions';
+import Music from '../Services/Music';
 import StarWarsUser from '../Services/StarWarsUser';
 
 class ListMethods {
@@ -6,17 +7,17 @@ class ListMethods {
     return [
         {
             command: 'help',
-            action: new Interactions().Help,
+            action: new Interactions().help,
             description: 'Show all commands'
         },
         {
             command: 'hello',
-            action: new Interactions().Hello,
+            action: new Interactions().hello,
             description: 'Used to debug, but Oni will say hi to u'
         },
         {
             command: 'invoke',
-            action: new Interactions().Invoke,
+            action: new Interactions().invoke,
             description: 'Call everyone to enter in voice channel ',
         },
         {
@@ -26,18 +27,23 @@ class ListMethods {
         },
         {
             command: 'sortition',
-            action: new Interactions().Sortition,
+            action: new Interactions().sortition,
             description: 'Sortition a options that has passed'
         },
         {
             command: 'join',
-            action: new Interactions().Join,
+            action: new Interactions().join,
             description: 'Join a voice channel'
         },
         {
             command: 'disconnect',
-            action: new Interactions().Disconnect,
+            action: new Interactions().disconnect,
             description: 'Disconnect from voice channel'
+        },
+        {
+            command: 'play',
+            action: new Music().play,
+            description: 'Play a song',
         }
     ];
   }
