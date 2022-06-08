@@ -1,9 +1,8 @@
 class Extract {
     public static contentToString (messageContent: string) {
         const content = messageContent.split(' ');
-        content.shift();
 
-        return content;
+        return content[1];
     }
 }
 
