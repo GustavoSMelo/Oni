@@ -6,7 +6,7 @@ import { joinVoiceChannel, getVoiceConnection, VoiceConnection } from '@discordj
 
 class Interactions {
     public hello(message: Message): void {
-        message.reply('hi');
+        message.reply('hello world');
     }
 
     public invoke(message: Message): void {
