@@ -1,6 +1,6 @@
-import Interactions from '../Services/Interactions';
-import Music from '../Services/Music';
-import StarWarsUser from '../Services/StarWarsUser';
+import Interactions from '../Commands/Interactions';
+import Music from '../Commands/Music';
+import StarWarsUser from '../Commands/StarWarsUser';
 
 class ListMethods {
     public constructor (
