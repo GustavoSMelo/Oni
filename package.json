@@ -23,6 +23,7 @@
       "opusscript": "^0.0.8",
       "pg": "^8.4.0",
       "prisma": "^3.14.0",
+      "redis": "^4.1.0",
       "reflect-metadata": "^0.1.13",
       "ts-node": "^10.7.0",
       "ts-node-dev": "^1.1.8",
