@@ -14,6 +14,7 @@ class Music {
 
     public async play (message: Message): Promise<void> {
         try {
+            console.log(this.queue);
             const connection = new Interactions().join(message);
             const URL = message.embeds[0].url;
             const validURL = ytdl.validateURL(URL);
