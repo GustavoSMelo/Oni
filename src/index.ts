@@ -3,6 +3,7 @@ import { Client } from 'discord.js';
 import myIntents from './Config/Intents';
 import ListMethods from './Config/ListMethods';
 import 'reflect-metadata';
+import Redis from './Config/Redis';
 
 // initiate constants
 
@@ -10,10 +11,11 @@ dotenv.config();
 const client = new Client({ intents: myIntents });
 const listMethods = new ListMethods().methods();
 const prefixEnv = process.env.PREFIX || '-';
+new Redis().connectDatabase();
 
 //events
 
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log('oni is hunting another soul ');
 });
 
