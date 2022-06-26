@@ -1,7 +1,7 @@
 import Redis from '../../Config/Redis';
 
 class Queue {
-    private constructor (
+    public constructor (
         private redis = new Redis().connectDatabase()
     ) {}
 

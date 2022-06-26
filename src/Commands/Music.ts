@@ -8,13 +8,11 @@ import {
 import Queue from '../Services/Queue/Queue';
 
 class Music {
-    public constructor (
-        private queue: Queue = new Queue(),
-    ) {}
-
     public async play (message: Message): Promise<void> {
         try {
-            console.log(this.queue);
+            console.log(message);
+
+            const queue = new Queue();
             const connection = new Interactions().join(message);
             const URL = message.embeds[0].url;
             const validURL = ytdl.validateURL(URL);
@@ -23,14 +21,12 @@ class Music {
 
             if (validURL) {
                 const ytbMusic = ytdl(URL, { filter: 'audioonly' });
-                this.queue.enqueue(ytbMusic);
-
-                console.log(this.queue.dequeue());
+                queue.enqueue(ytbMusic);
 
                 message.reply('Music added in Queue');
 
                 const audioPlayer = createAudioPlayer();
-                const resourcePlayer = createAudioResource(this.queue.dequeue());
+                const resourcePlayer = createAudioResource(await queue.dequeue());
 
                 await audioPlayer.play(resourcePlayer);
                 connection.subscribe(audioPlayer);
