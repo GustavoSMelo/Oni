@@ -1,31 +1,24 @@
-import Redis from '../../Config/Redis';
-
 class Queue {
     public constructor (
-        private redis = new Redis().connectDatabase()
+        private queue: Array<any>
     ) {}
 
-    private async getQueue(): Promise<Array<any>> {
-        return (await (await this.redis).get('queue')).split(',');
+    private getQueue(): any {
+        return this.queue;
     }
 
-    public async enqueue(item: any) {
-        const queue = await this.getQueue();
-        await queue.push(item);
-
-        await (await this.redis).set('queue', queue.join(','));
+    public enqueue(item: any): any {
+        this.queue.push(item);
     }
 
-    public async dequeue() {
-        const queue = await this.getQueue();
-        await (await this.redis).set('queue', queue.join(','));
+    public dequeue(): any {
+        const element = this.queue.shift();
 
-        return queue.shift();
+        return element
     }
 
-    public async isEmpty() {
-        const queue = await this.getQueue();
-        return queue.length === 0;
+    public isEmpty(): boolean {
+        return this.getQueue() > 0 ? true : false;
     }
 }
 

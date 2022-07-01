@@ -6,13 +6,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-model StarWarsUser {
-    id      Int     @id @default(autoincrement())
-    faction String
-    role    String
-    userId  String
+model Music {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  queueMusic    String[]
 }

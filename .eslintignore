@@ -1,1 +1,6 @@
 .eslintrc.js
+.gitignore
+.editorconfig
+.dockerignore
+package-lock.json
+tsconfig.json
