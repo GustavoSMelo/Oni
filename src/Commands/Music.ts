@@ -5,11 +5,15 @@ import {
     createAudioPlayer,
     createAudioResource
 } from '@discordjs/voice';
+import Queue from '../Services/Queue/Queue';
 
 class Music {
-    public async play (message: Message): Promise<void> {
+    public async play (message: Message, queue: Queue): Promise<void> {
         try {
             const connection = new Interactions().join(message);
+
+            if (connection == null) throw new Error('Error to connect to voice channel');
+
             const URL = message.embeds[0].url;
             const validURL = await ytdl.validateURL(URL);
 
@@ -22,17 +26,20 @@ class Music {
                 message.reply('Music added in Queue');
 
                 const audioPlayer = await createAudioPlayer();
-                const resourcePlayer = await createAudioResource(await queue.dequeue());
+                const resourcePlayer = await createAudioResource(await queue.getFirst());
+                const timer = queue.lenght() > 1 ? 10000 : 0
 
-                await audioPlayer.play(resourcePlayer);
-                connection.subscribe(audioPlayer);
-                message.reply('Music playing');
+                setTimeout(async () => {
+                    await audioPlayer.play(resourcePlayer);
+                    connection.subscribe(audioPlayer);
+                }, timer);
+
+                message.reply(`Playing ${message.embeds[0].title}... `);
 
             } else {
                 message.reply('Invalid URL');
             }
         } catch (err) {
-            message.reply('An error was found while trying to play the music');
             console.error(err);
         }
     }
