@@ -3,14 +3,16 @@ import { Client } from 'discord.js';
 import myIntents from './Config/Intents';
 import ListMethods from './Config/ListMethods';
 import 'reflect-metadata';
+import Queue from './Services/Queue/Queue';
 
 // initiate constants
 
 dotenv.config();
+const support = [];
 const client = new Client({ intents: myIntents });
 const listMethods = new ListMethods().methods();
 const prefixEnv = process.env.PREFIX || '-';
-const queue = [];
+const queue = new Queue(support);
 
 //events
 
@@ -31,7 +33,7 @@ client.on('messageCreate', message => {
             [messageContent, ''] ;
 
         listMethods.map(methods => {
-            if (methods.command === command && prefix === prefixEnv) methods.action(message);
+            if (methods.command === command && prefix === prefixEnv) methods.action(message, queue);
         });
     }
 });
