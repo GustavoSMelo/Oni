@@ -34,13 +34,16 @@ class Interactions {
     }
 
     public join (message: Message): VoiceConnection {
-        const connection = joinVoiceChannel({
-            channelId: message.member.voice.channel.id,
-            guildId: message.member.guild.id,
-            adapterCreator: message.guild.voiceAdapterCreator
-        });
-
-        return connection;
+        try {
+            const connection = joinVoiceChannel({
+                channelId: message.member.voice.channel.id,
+                guildId: message.member.guild.id,
+                adapterCreator: message.guild.voiceAdapterCreator
+            });
+            return connection;
+        } catch (_) {
+            message.reply('You should be in a voice channel to execute this command');
+        }
     }
 
     public disconnect (message: Message): void {
