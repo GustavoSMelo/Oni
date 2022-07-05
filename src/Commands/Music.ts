@@ -15,6 +15,8 @@ class Music {
             if (connection == null) throw new Error('Error to connect to voice channel');
 
             const URL = message.embeds[0].url;
+            const title = message.embeds[0].title;
+
             const validURL = await ytdl.validateURL(URL);
 
             console.log(URL);
@@ -23,22 +25,23 @@ class Music {
                 const ytbMusic = await ytdl(URL, { filter: 'audioonly' });
                 queue.enqueue(ytbMusic);
 
-                message.reply('Music added in Queue');
+                message.reply(`Music ${title} in Queue`);
 
                 const audioPlayer = await createAudioPlayer();
                 const resourcePlayer = await createAudioResource(await queue.getFirst());
-                const timer = queue.lenght() > 1 ? 10000 : 0
+                const timer = 15000;
 
-                setTimeout(async () => {
+                console.log(queue);
+
                     await audioPlayer.play(resourcePlayer);
                     connection.subscribe(audioPlayer);
-                }, timer);
+                    message.reply(`Playing ${title}... `);
 
-                message.reply(`Playing ${message.embeds[0].title}... `);
+                // const musicTimer = new Promise(() => setTimeout(() => queue.dequeue(), timer));
 
-            } else {
-                message.reply('Invalid URL');
-            }
+                // await musicTimer;
+
+            } else message.reply('Invalid URL');
         } catch (err) {
             console.error(err);
         }
