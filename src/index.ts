@@ -4,6 +4,7 @@ import myIntents from './Config/Intents';
 import ListMethods from './Config/ListMethods';
 import 'reflect-metadata';
 import Queue from './Services/Queue/Queue';
+import Cron from './Services/Cron/Cron';
 
 // initiate constants
 
@@ -13,6 +14,7 @@ const client = new Client({ intents: myIntents });
 const listMethods = new ListMethods().methods();
 const prefixEnv = process.env.PREFIX || '-';
 const queue = new Queue(support);
+const cronTimer = new Cron();
 
 //events
 
@@ -30,10 +32,12 @@ client.on('messageCreate', message => {
 
         const [command, _] = messageContent?.includes(' ') ?
             messageContent.split(' ') :
-            [messageContent, ''] ;
+            [messageContent, ''];
 
         listMethods.map(methods => {
-            if (methods.command === command && prefix === prefixEnv) methods.action(message, queue);
+            if (methods.command === command && prefix === prefixEnv) {
+                methods.action(message, queue, cronTimer, false);
+            }
         });
     }
 });
