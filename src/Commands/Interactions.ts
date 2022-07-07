@@ -40,6 +40,7 @@ class Interactions {
                 guildId: message.member.guild.id,
                 adapterCreator: message.guild.voiceAdapterCreator
             });
+
             return connection;
         } catch (_) {
             message.reply('You should be in a voice channel to execute this command');
