@@ -6,9 +6,11 @@ import {
     createAudioResource
 } from '@discordjs/voice';
 import Queue from '../Services/Queue/Queue';
+import Cron from '../Services/Cron/Cron';
 
 class Music {
-    public async play (message: Message, queue: Queue): Promise<void> {
+    public async play (message: Message, queue: Queue, cron: Cron, couldPlay: boolean): Promise<void> {
+        console.log('testando');
         try {
             const connection = new Interactions().join(message);
 
@@ -19,29 +21,41 @@ class Music {
 
             const validURL = await ytdl.validateURL(URL);
 
-            console.log(URL);
+            if (!validURL) throw new Error(`[Command: play] -> URL invalid `);
 
-            if (validURL) {
-                const ytbMusic = await ytdl(URL, { filter: 'audioonly' });
-                queue.enqueue(ytbMusic);
+            const ytbMusic = await ytdl(URL, { filter: 'audioonly' });
+            queue.enqueue(ytbMusic);
+            cron.setCronTimer(15000);
 
-                message.reply(`Music ${title} in Queue`);
+            console.log(queue);
+
+            message.reply(`Music ${title} in Queue`);
+
+            if (queue.lenght() <= 1 || couldPlay) {
 
                 const audioPlayer = await createAudioPlayer();
                 const resourcePlayer = await createAudioResource(await queue.getFirst());
-                const timer = 15000;
 
-                console.log(queue);
+                await audioPlayer.play(resourcePlayer);
+                connection.subscribe(audioPlayer);
+                message.reply(`Playing ${title}... `);
 
-                    await audioPlayer.play(resourcePlayer);
-                    connection.subscribe(audioPlayer);
-                    message.reply(`Playing ${title}... `);
+                console.log(couldPlay);
 
-                // const musicTimer = new Promise(() => setTimeout(() => queue.dequeue(), timer));
+                const musicTimer = new Promise(() => setTimeout(() => queue.dequeue(), 15000));
+                await musicTimer;
+            } else {
+                let executeNextMusic = false;
+                while (executeNextMusic === false) {
+                    console.log(cron);
+                    cron.decreaseBySecond();
+                    executeNextMusic = cron.isZero();
 
-                // await musicTimer;
+                    console.log(executeNextMusic);
+                }
 
-            } else message.reply('Invalid URL');
+                this.play(message, queue, cron, true);
+            }
         } catch (err) {
             console.error(err);
         }
