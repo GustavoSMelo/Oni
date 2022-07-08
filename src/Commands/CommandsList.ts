@@ -1,8 +1,8 @@
-import Interactions from '../Commands/Interactions';
-import Music from '../Commands/Music';
-import StarWarsUser from '../Commands/StarWarsUser';
+import Interactions from './Interactions';
+import Music from './Music';
+import StarWarsUser from './StarWarsUser';
 
-class ListMethods {
+class CommandsList {
     public constructor (
         private interactions: Interactions = new Interactions(),
         private music: Music = new Music(),
@@ -59,4 +59,4 @@ class ListMethods {
     }
 }
 
-export default ListMethods;
+export default CommandsList;

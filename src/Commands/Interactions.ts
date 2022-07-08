@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import ListMethods from '../Config/ListMethods';
+import CommandsList from './CommandsList';
 import Extract from '../Utils/Extract';
 import Generate from '../Utils/Generate';
 import { joinVoiceChannel, getVoiceConnection, VoiceConnection } from '@discordjs/voice';
@@ -16,12 +16,13 @@ class Interactions {
     public help(message: Message): void {
         let helper = '';
 
-        new ListMethods()
+        new CommandsList()
             .methods()
             .map(method => {
                 helper += `Comando: ${method.command} \nDescrição: ${method.description} \n\n`;
                 helper += '-----------------------------------------------------\n\n';
             });
+        helper += `Oni - version 0 \nDeveloped by Gustavo S. Melo @GustavoSMelo\n`;
 
         message.reply(helper);
     }

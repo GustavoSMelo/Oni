@@ -1,19 +1,19 @@
 import * as dotenv from 'dotenv';
 import { Client } from 'discord.js';
 import myIntents from './Config/Intents';
-import ListMethods from './Config/ListMethods';
-import 'reflect-metadata';
+import CommandsList from './Commands/CommandsList';
 import Queue from './Services/Queue/Queue';
 import Cron from './Services/Cron/Cron';
+import 'reflect-metadata';
 
 // initiate constants
 
 dotenv.config();
-const support = [];
+const queueSupport = [];
 const client = new Client({ intents: myIntents });
-const listMethods = new ListMethods().methods();
+const commandsList = new CommandsList().methods();
 const prefixEnv = process.env.PREFIX || '-';
-const queue = new Queue(support);
+const queue = new Queue(queueSupport);
 const cronTimer = new Cron();
 
 //events
@@ -34,9 +34,9 @@ client.on('messageCreate', message => {
             messageContent.split(' ') :
             [messageContent, ''];
 
-        listMethods.map(methods => {
+            commandsList.map(async methods => {
             if (methods.command === command && prefix === prefixEnv) {
-                methods.action(message, queue, cronTimer, false);
+                await methods.action(message, queue, cronTimer, false);
             }
         });
     }

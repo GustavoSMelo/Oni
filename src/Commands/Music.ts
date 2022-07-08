@@ -31,7 +31,7 @@ class Music {
 
             message.reply(`Music ${title} in Queue`);
 
-            if (queue.lenght() <= 1 || couldPlay) {
+            if (queue.lenght() <= 1 || (couldPlay && !queue.isEmpty())) {
 
                 const audioPlayer = await createAudioPlayer();
                 const resourcePlayer = await createAudioResource(await queue.getFirst());
@@ -48,7 +48,7 @@ class Music {
                 let executeNextMusic = false;
                 while (executeNextMusic === false) {
                     console.log(cron);
-                    cron.decreaseBySecond();
+                    await cron.decreaseBySecond();
                     executeNextMusic = cron.isZero();
 
                     console.log(executeNextMusic);
