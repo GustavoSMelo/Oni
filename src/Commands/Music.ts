@@ -6,11 +6,11 @@ import {
     createAudioResource
 } from '@discordjs/voice';
 import Queue from '../Services/Queue/Queue';
-import Cron from '../Services/Cron/Cron';
+// import Cron from '../Services/Cron/Cron';
+import  * as cron from 'cron';
 
 class Music {
-    public async play (message: Message, queue: Queue, cron: Cron, couldPlay: boolean): Promise<void> {
-        console.log('testando');
+    public async play (message: Message, queue: Queue, /*cron: Cron,*/ couldPlay: boolean): Promise<void> {
         try {
             const connection = new Interactions().join(message);
 
@@ -24,8 +24,9 @@ class Music {
             if (!validURL) throw new Error(`[Command: play] -> URL invalid `);
 
             const ytbMusic = await ytdl(URL, { filter: 'audioonly' });
-            queue.enqueue(ytbMusic);
-            cron.setCronTimer(15000);
+
+            if (!couldPlay)
+                queue.enqueue(ytbMusic);
 
             console.log(queue);
 
@@ -38,23 +39,17 @@ class Music {
 
                 await audioPlayer.play(resourcePlayer);
                 connection.subscribe(audioPlayer);
-                message.reply(`Playing ${title}... `);
 
-                console.log(couldPlay);
+                const job = new cron.CronJob('15 0 0 0 0 0', () => {
+                    console.log('oi')
+                }, null);
 
-                const musicTimer = new Promise(() => setTimeout(() => queue.dequeue(), 15000));
-                await musicTimer;
+                job.start();
+                //queue.dequeue();
             } else {
-                let executeNextMusic = false;
-                while (executeNextMusic === false) {
-                    console.log(cron);
-                    await cron.decreaseBySecond();
-                    executeNextMusic = cron.isZero();
-
-                    console.log(executeNextMusic);
-                }
-
-                this.play(message, queue, cron, true);
+                new cron.CronJob('15 0 0 0 0 0', () => {
+                    console.log('oi 2')
+                }, null);
             }
         } catch (err) {
             console.error(err);

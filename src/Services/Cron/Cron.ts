@@ -5,8 +5,9 @@ class Cron {
         this.cronTimer = timer;
     }
 
-    public decreaseBySecond (): Promise<unknown> {
-        return new Promise(() => setTimeout(() => this.cronTimer -= 1, 1000));
+    public async decreaseBySecond (): Promise<void> {
+        const timer = new Promise(() => setTimeout(() => this.cronTimer -= 1, 1000));
+        await Promise.all([timer]);
     }
 
     public isZero (): boolean {

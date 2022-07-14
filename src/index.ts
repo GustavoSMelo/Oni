@@ -36,7 +36,7 @@ client.on('messageCreate', message => {
 
             commandsList.map(async methods => {
             if (methods.command === command && prefix === prefixEnv) {
-                await methods.action(message, queue, cronTimer, false);
+                await methods.action(message, queue, false);
             }
         });
     }
