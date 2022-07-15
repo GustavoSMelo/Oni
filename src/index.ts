@@ -34,9 +34,9 @@ client.on('messageCreate', message => {
             messageContent.split(' ') :
             [messageContent, ''];
 
-            commandsList.map(async methods => {
+            commandsList.forEach(async methods => {
             if (methods.command === command && prefix === prefixEnv) {
-                await methods.action(message, queue, false);
+                await methods.action(message, queue, cronTimer , false);
             }
         });
     }
