@@ -6,11 +6,11 @@ import {
     createAudioResource
 } from '@discordjs/voice';
 import Queue from '../Services/Queue/Queue';
-// import Cron from '../Services/Cron/Cron';
-import  * as cron from 'cron';
+import Cron from '../Services/Cron/Cron';
+// import { CronJob } from 'cron';
 
 class Music {
-    public async play (message: Message, queue: Queue, /*cron: Cron,*/ couldPlay: boolean): Promise<void> {
+    public async play (message: Message, queue: Queue, cron: Cron, couldPlay: boolean): Promise<void> {
         try {
             const connection = new Interactions().join(message);
 
@@ -23,7 +23,7 @@ class Music {
 
             if (!validURL) throw new Error(`[Command: play] -> URL invalid `);
 
-            const ytbMusic = await ytdl(URL, { filter: 'audioonly' });
+            const ytbMusic = ytdl(URL, { filter: 'audioonly' });
 
             if (!couldPlay)
                 queue.enqueue(ytbMusic);
@@ -34,32 +34,29 @@ class Music {
 
             if (queue.lenght() <= 1 || (couldPlay && !queue.isEmpty())) {
 
-                const audioPlayer = await createAudioPlayer();
-                const resourcePlayer = await createAudioResource(await queue.getFirst());
+                const audioPlayer = createAudioPlayer();
+                const resourcePlayer = createAudioResource(await queue.getFirst());
 
-                await audioPlayer.play(resourcePlayer);
+                audioPlayer.play(resourcePlayer);
                 connection.subscribe(audioPlayer);
 
-                const job = new cron.CronJob('15 0 0 0 0 0', () => {
-                    console.log('oi')
-                }, null);
+                cron.setCronTimer(15000);
 
-                job.start();
-                //queue.dequeue();
+                await cron.awaitForTimer();
+                console.log('esperei')
             } else {
-                new cron.CronJob('15 0 0 0 0 0', () => {
-                    console.log('oi 2')
-                }, null);
+                cron.isFinished();
             }
         } catch (err) {
             console.error(err);
         }
     }
 
-    public async stop (message: Message): Promise<void> {
+    public async stop (message: Message, queue: Queue): Promise<void> {
         try {
             const connection = new Interactions().join(message);
             connection.destroy();
+            queue.clear();
         } catch (err) {
             message.reply('An error was found while trying to stop the music');
             console.error(err);
