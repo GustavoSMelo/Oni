@@ -16,9 +16,7 @@ class Queue {
     }
 
     public dequeue(): any {
-        const element = this.queue.shift();
-
-        return element
+        return this.queue.shift();
     }
 
     public isEmpty(): boolean {
@@ -27,6 +25,10 @@ class Queue {
 
     public lenght(): number {
         return this.queue.length;
+    }
+
+    public clear(): void {
+        this.queue = [];
     }
 }
 
