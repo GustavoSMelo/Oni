@@ -5,19 +5,21 @@ class Cron {
         this.cronTimer = timer;
     }
 
-    public async awaitForTimer (): Promise<void> {
+    public isFinished (): boolean {
+        return this.cronTimer > 0 ? false : true;
+    }
+
+    public async awaitForTimer () {
         const job = setInterval(() => {
             this.cronTimer -= 1;
             console.log(this.cronTimer);
-        }, 1000);
+        }, 1);
 
-        if (this.isFinished()) {
-            clearInterval(job);
-        }
-    }
+        setTimeout(() => {
+            clearInterval(job)
 
-    public isFinished (): boolean {
-        return this.cronTimer > 0 ? false : true;
+            !this.isFinished() ? this.awaitForTimer() : true;
+        }, 1);
     }
 }
 
