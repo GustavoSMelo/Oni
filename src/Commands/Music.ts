@@ -43,7 +43,6 @@ class Music {
                 cron.setCronTimer(15000);
 
                 await cron.awaitForTimer();
-                console.log('esperei')
             } else {
                 cron.isFinished();
             }
