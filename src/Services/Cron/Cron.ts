@@ -10,16 +10,25 @@ class Cron {
     }
 
     public async awaitForTimer () {
-        const job = setInterval(() => {
+        const jobInterval = setInterval(() => {
             this.cronTimer -= 1;
-            console.log(this.cronTimer);
         }, 1);
 
-        setTimeout(() => {
-            clearInterval(job)
+        const jobTimeout = setTimeout(() => {
+            clearInterval(jobInterval)
 
-            !this.isFinished() ? this.awaitForTimer() : true;
+            if (!this.isFinished())
+                this.awaitForTimer();
         }, 1);
+
+        if (this.isFinished()) {
+            await Promise.all([jobTimeout]);
+
+            clearTimeout(jobTimeout);
+            console.log('to na cron');
+            return true;
+        }
+        return false;
     }
 }
 

@@ -7,10 +7,24 @@ import {
 } from '@discordjs/voice';
 import Queue from '../Services/Queue/Queue';
 import Cron from '../Services/Cron/Cron';
-// import { CronJob } from 'cron';
+import { measureMemory } from 'vm';
 
 class Music {
-    public async play (message: Message, queue: Queue, cron: Cron, couldPlay: boolean): Promise<void> {
+    private async cronMusic (cron: Cron, queue: Queue, message: Message) {
+        const response = await new Promise(() => cron.awaitForTimer());
+
+        console.log('1');
+
+        await Promise.all([response]);
+
+        if (response) {
+            queue.dequeue();
+            if (queue.isEmpty())
+                new Interactions().disconnect(message);
+        }
+    }
+
+    public async play(message: Message, queue: Queue, cron: Cron, couldPlay: boolean): Promise<void> {
         try {
             const connection = new Interactions().join(message);
 
@@ -19,7 +33,7 @@ class Music {
             const URL = message.embeds[0].url;
             const title = message.embeds[0].title;
 
-            const validURL = await ytdl.validateURL(URL);
+            const validURL = ytdl.validateURL(URL);
 
             if (!validURL) throw new Error(`[Command: play] -> URL invalid `);
 
@@ -30,7 +44,7 @@ class Music {
 
             console.log(queue);
 
-            message.reply(`Music ${title} in Queue`);
+            message.reply(`Music ${title} added in Queue`);
 
             if (queue.lenght() <= 1 || (couldPlay && !queue.isEmpty())) {
 
@@ -40,18 +54,21 @@ class Music {
                 audioPlayer.play(resourcePlayer);
                 connection.subscribe(audioPlayer);
 
+                message.reply(`Played music`);
+
                 cron.setCronTimer(15000);
 
-                await cron.awaitForTimer();
+                this.cronMusic(cron, queue, message);
+
             } else {
-                cron.isFinished();
+                this.cronMusic(cron, queue, message);
             }
         } catch (err) {
             console.error(err);
         }
     }
 
-    public async stop (message: Message, queue: Queue): Promise<void> {
+    public async stop(message: Message, queue: Queue): Promise<void> {
         try {
             const connection = new Interactions().join(message);
             connection.destroy();
