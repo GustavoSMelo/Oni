@@ -7,7 +7,6 @@ import {
 } from '@discordjs/voice';
 import Queue from '../Services/Queue/Queue';
 import Cron from '../Services/Cron/Cron';
-import { measureMemory } from 'vm';
 
 class Music {
     private async cronMusic (cron: Cron, queue: Queue, message: Message) {
@@ -56,12 +55,34 @@ class Music {
 
                 message.reply(`Played music`);
 
-                cron.setCronTimer(15000);
+                cron.setCronTimer(3000);
 
-                this.cronMusic(cron, queue, message);
+                const response = await new Promise(() => cron.awaitForTimer());
+                const response2 = await Promise.all([response]);
+
+                console.log(response);
+                console.log(response2);
+
+                console.log(queue);
+
+                if (response) {
+                    queue.dequeue();
+                    if (queue.isEmpty())
+                        new Interactions().disconnect(message);
+                }
 
             } else {
-                this.cronMusic(cron, queue, message);
+                const response = await new Promise(() => cron.awaitForTimer());
+
+                console.log('2');
+
+                await Promise.all([response]);
+
+                if (response) {
+                    queue.dequeue();
+                    if (queue.isEmpty())
+                        new Interactions().disconnect(message);
+                }
             }
         } catch (err) {
             console.error(err);
